@@ -253,6 +253,12 @@ endif ()
 include(CheckIncludeFiles)
 CHECK_INCLUDE_FILES(strings.h HAVE_STRINGS_H)
 
+if (NOT WIN32)
+   CHECK_INCLUDE_FILES(poll.h HAVE_POLL_H)
+   CHECK_INCLUDE_FILES(sys/poll.h HAVE_SYS_POLL_H)
+   CHECK_FUNCTION_EXISTS(poll HAVE_POLL)
+endif ()
+
 if (MINGW)
    # Define _CRT_RAND_S, so that MinGW's stdlib.h declares Microsoft's rand_s().
    message (" MinGW: define _CRT_RAND_S")

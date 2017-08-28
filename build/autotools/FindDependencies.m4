@@ -18,7 +18,8 @@ AM_CONDITIONAL(ENABLE_LIBBSON, [test "$with_libbson" = "bundled"])
 AC_CHECK_FUNCS([shm_open], [SHM_LIB=],
                [AC_CHECK_LIB([rt], [shm_open], [SHM_LIB=-lrt], [SHM_LIB=])])
 AC_SUBST([SHM_LIB])
-
+AC_CHECK_HEADERS([poll.h sys/poll.h])
+AC_CHECK_FUNCS([poll])
 # Check for sched_getcpu
 AC_CHECK_FUNCS([sched_getcpu])
 

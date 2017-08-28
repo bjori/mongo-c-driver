@@ -39,6 +39,11 @@
 #include <sys/uio.h>
 #include <sys/un.h>
 #endif
+#if defined(HAVE_POLL_H)
+#include <poll.h>
+#elif defined(HAVE_SYS_POLL_H)
+#include <sys/poll.h>
+#endif
 
 #include "mongoc-iovec.h"
 
