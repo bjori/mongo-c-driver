@@ -20,6 +20,7 @@
 #include "mongoc-handshake-private.h"
 
 #include "mongoc-error.h"
+#include "mongoc-errno-private.h"
 #include "mongoc-log.h"
 #include "mongoc-topology-private.h"
 #include "mongoc-topology-description-apm-private.h"
@@ -666,11 +667,7 @@ mongoc_topology_select_server_id (mongoc_topology_t *topology,
          mongoc_topology_scanner_get_error (topology->scanner, &scanner_error);
          mongoc_mutex_unlock (&topology->mutex);
 
-#ifdef _WIN32
-         if (r == WSAETIMEDOUT) {
-#else
-         if (r == ETIMEDOUT) {
-#endif
+         if (r == MONGOC_TIMEDOUT) {
             /* handle timeouts */
             _mongoc_server_selection_error (timeout_msg, &scanner_error, error);
 
@@ -1007,11 +1004,7 @@ _mongoc_topology_run_background (void *data)
             r = mongoc_cond_timedwait (
                &topology->cond_server, &topology->mutex, timeout);
 
-#ifdef _WIN32
-            if (!(r == 0 || r == WSAETIMEDOUT)) {
-#else
-            if (!(r == 0 || r == ETIMEDOUT)) {
-#endif
+            if (!(r == 0 || r == MONGOC_TIMEDOUT)) {
                /* handle errors */
                goto DONE;
             }

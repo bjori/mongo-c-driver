@@ -206,8 +206,8 @@ _mongoc_socket_wait (mongoc_socket_t *sock, /* IN */
       if (ret > 0) {
 /* Something happened, so return that */
 #ifdef _WIN32
-         return (FD_ISSET (sock->sd, &read_fds)
-                 || FD_ISSET (sock->sd, &write_fds));
+         return (FD_ISSET (sock->sd, &read_fds) ||
+                 FD_ISSET (sock->sd, &write_fds));
 #else
          RETURN (0 != (pfd.revents & events));
 #endif

@@ -455,11 +455,7 @@ _mongoc_stream_tls_openssl_readv (mongoc_stream_t *stream,
             if ((expire - now) < 0) {
                if (read_ret == 0) {
                   mongoc_counter_streams_timeout_inc ();
-#ifdef _WIN32
-                  errno = WSAETIMEDOUT;
-#else
-                  errno = ETIMEDOUT;
-#endif
+                  errno = MONGOC_TIMEDOUT;
                   RETURN (-1);
                }
 
@@ -578,11 +574,7 @@ mongoc_stream_tls_openssl_handshake (mongoc_stream_t *stream,
    }
 
    if (!errno) {
-#ifdef _WIN32
-      errno = WSAETIMEDOUT;
-#else
-      errno = ETIMEDOUT;
-#endif
+      errno = MONGOC_TIMEDOUT;
    }
 
 
